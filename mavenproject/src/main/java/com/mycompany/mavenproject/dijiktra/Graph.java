@@ -51,15 +51,18 @@ public class Graph extends JFrame {
             listV.add(aVertex[i]);
         }
         int r1, r2;
-
-        while(numEdge >= 0){
+        int i = numEdge;
+        while(i >= 0){
             r1 = (int)(Math.random()*numVertex ) + 1;
             r2 = (int)(Math.random()*numVertex ) + 1;
             if(r1 != r2){// && !aVertex[2].getAdjacentNode().containsKey(aVertex[r1])){
-                if(aVertex[r2].getAdjacentNode().containsKey(aVertex[r1]) )
+                if(aVertex[r2].getAdjacentNode().containsKey(aVertex[r1]) ){
                     numEdge = aVertex[r2].getAdjacentNode().get(aVertex[r1]);
+                    i++;
+                }
                 aVertex[r1].addAdjacentNode(aVertex[r2], numEdge);
                 numEdge --;
+                i--;
             }     
         }
     }
@@ -95,8 +98,8 @@ public class Graph extends JFrame {
     }
     public void initGraph() {
 
-//        ranGraph();
-        matrixGraph();
+        ranGraph();
+//        matrixGraph();
 
         // random: nhap so dinh, so canh
         // nhap tay
