@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import javax.swing.JFrame;
 
 /**
@@ -19,120 +18,101 @@ import javax.swing.JFrame;
  * @author Admin
  */
 public class Graph extends JFrame {
+
     private mxGraph graph;
     private mxGraphComponent graphComponent;
-    private  List<Vertex> listV = new ArrayList<>();
-    private static  HashMap m = new HashMap();
-  
+    private ArrayList<Vertex> listV = new ArrayList<>();
+
+    private List<Edge> listE = new ArrayList<>();    // dung cho thuat toan kruskal
+    private List<Edge> listEContrast = new ArrayList<>();    // dung cho thuat toan kruskal
+
+    private static HashMap m = new HashMap(); // lưu đỉnh để đưa vào đồ thị visualize
+    private static HashMap m1 = new HashMap(); // lưu cạnh
+    private static HashMap m1Contrash = new HashMap(); // lưu cạnh
+
     public Graph() {
         super("Abc");
         initGraph();
         initGui();
 
     }
-    
-    public void ranGraph(){
-        
-        Scanner sc = new Scanner(System.in);
-        
-        int numVertex ;
-        int numEdge ;       
-        numVertex = sc.nextInt();
-        numEdge = sc.nextInt();
-        Vertex [] aVertex = new Vertex[50];
-        
-        int max = 500; int min = 0;
-        int x,y;
-        
-        for(int i = 1; i <= numVertex; i++){
-            x = (int)(Math.random()*(max - min) + 1 + min);
-            y = (int)(Math.random()*(max - min) + 1 + min);
-            aVertex[i] = new Vertex("Vertex"+String.valueOf(i),x,y);
-            listV.add(aVertex[i]);
-        }
-        int r1, r2;
-        int i = numEdge;
-        while(i >= 0){
-            r1 = (int)(Math.random()*numVertex ) + 1;
-            r2 = (int)(Math.random()*numVertex ) + 1;
-            if(r1 != r2){// && !aVertex[2].getAdjacentNode().containsKey(aVertex[r1])){
-                if(aVertex[r2].getAdjacentNode().containsKey(aVertex[r1]) ){
-                    numEdge = aVertex[r2].getAdjacentNode().get(aVertex[r1]);
-                    i++;
-                }
-                aVertex[r1].addAdjacentNode(aVertex[r2], numEdge);
-                numEdge --;
-                i--;
-            }     
-        }
-    }
-    
-    public void matrixGraph(){
-        
-        int numVertex;
-        Vertex [] aVertex  = new Vertex[50];
-        int[][] matrix = new int[50][50];
-        Scanner input = new Scanner(System.in);
-        System.out.print("nhap so dinh: ");
-        numVertex = input.nextInt();
-        int max = 500; int min = 0;
-        int x,y;
-        
-        
-        for(int i = 0; i < numVertex; i++){
-            x = (int)(Math.random()*(max - min) + 1 + min);
-            y = (int)(Math.random()*(max - min) + 1 + min);            
-            aVertex[i] = new Vertex("Vertex" + String.valueOf(i), x,y);
-            listV.add(aVertex[i]);
-        }
-        
-        
-	for(int row = 0; row < numVertex; row++) {
-            for(int col = 0; col< numVertex; col++) {
-                matrix[row][col] = input.nextInt(); 
-                if(matrix[row][col] != 0 && row != col){
-                    aVertex[row].addAdjacentNode(aVertex[col], matrix[row][col]);
-                }
-            }
-        }
-    }
+
     public void initGraph() {
 
-        ranGraph();
-//        matrixGraph();
+//        int n = 4;
+//        int max = 500; int min = 0;
+//        int x,y;
+//        Vertex [] aVertex = new Vertex[50];
+//        for(int i = 1; i <= n; i++){
+//            x = (int)(Math.random()*(max - min) + 1 + min);
+//            y = (int)(Math.random()*(max - min) + 1 + min);
+//            aVertex[i] = new Vertex("Vertex"+String.valueOf(i),x,y);
+//            listV.add(aVertex[i]);
+//        }
+//        int r1, r2;
+//        int edge = 3;
+//        while(edge >= 0){
+//            r1 = (int)(Math.random()*n ) + 1;
+//            r2 = (int)(Math.random()*n ) + 1;
+//            if(r1 != r2 && !(aVertex[r2].getTarList().contains(aVertex[r1]))){
+//                aVertex[r1].addAdjacentNode(aVertex[r2], edge);
+//                aVertex[r1].addTarList(aVertex[r2]);
+//                edge --;
+//            }     
+//        }
+        Vertex A = new Vertex("A", 150, 150);
+        Vertex B = new Vertex("B", 300, 150);
+        Vertex C = new Vertex("C", 450, 150);
+        Vertex D = new Vertex("D", 150, 300);
+        Vertex E = new Vertex("E", 450, 300);
+        A.addAdjacentNode(B, 3);
+        B.addAdjacentNode(A, 3);
+        listE.add(new Edge(A, B, 3));
+        listEContrast.add(new Edge(B, A, 3));
 
-        // random: nhap so dinh, so canh
-        // nhap tay
-        // file 
-        // ma tran
-        // danh sach ke
-//        Vertex A = new Vertex("A",150,150);
-//        Vertex B = new Vertex("B",300,150);
-//        Vertex C = new Vertex("C",450,150);
-//        Vertex D = new Vertex("D",150,300);
-//        Vertex E = new Vertex("E",450,300);
-//        Vertex G = new Vertex("G",450,450);       
-//        A.addAdjacentNode(B, 1);
-//        A.addAdjacentNode(E, 1);
-//        E.addAdjacentNode(C, 1);
-//        E.addAdjacentNode(D, 1);
-//        C.addAdjacentNode(B, 1);
-//        listV.add(A);
-//        listV.add(B);
-//        listV.add(C);
-//        listV.add(D);
-//        listV.add(E);
-//        listV.add(G);
+        A.addAdjacentNode(E, 5);
+        E.addAdjacentNode(A, 5);
+        listE.add(new Edge(A, E, 5));
+        listEContrast.add(new Edge(E, A, 5));
+
+        B.addAdjacentNode(C, 10);
+        C.addAdjacentNode(B, 10);
+        listE.add(new Edge(B, C, 10));
+        listEContrast.add(new Edge(C, B, 10));
+
+        E.addAdjacentNode(C, 1);
+        C.addAdjacentNode(E, 1);
+        listE.add(new Edge(E, C, 1));
+        listEContrast.add(new Edge(C, E, 1));
+
+        E.addAdjacentNode(D, 6);
+        D.addAdjacentNode(E, 6);
+        listE.add(new Edge(E, D, 6));
+        listEContrast.add(new Edge(D, E, 6));
+
+        listV.add(A);
+        listV.add(B);
+        listV.add(C);
+        listV.add(D);
+        listV.add(E);
     }
-    
-    public void indirectionGraph(){
-        
+
+    public static HashMap getM1() {
+        return m1;
     }
-    public void directionGraph(){
-        
+
+    public static void setM1(HashMap m1) {
+        Graph.m1 = m1;
     }
-    
-    
+
+    public List<Edge> getListE() {
+        return listE;
+    }
+
+    public void setListE(ArrayList<Edge> listE) {
+        this.listE = listE;
+    }
+
     public mxGraph getGraph() {
         return graph;
     }
@@ -141,11 +121,11 @@ public class Graph extends JFrame {
         this.graph = graph;
     }
 
-    public List<Vertex> getListV() {
+    public ArrayList<Vertex> getListV() {
         return listV;
     }
 
-    public void setListV(List<Vertex> listV) {
+    public void setListV(ArrayList<Vertex> listV) {
         this.listV = listV;
     }
 
@@ -156,8 +136,6 @@ public class Graph extends JFrame {
     public static void setM(HashMap m) {
         Graph.m = m;
     }
-    
-    
 
     public void initGui() {
         setSize(800, 600);
@@ -182,12 +160,43 @@ public class Graph extends JFrame {
 
             for (Vertex v : listV) {
                 for (Map.Entry<Vertex, Integer> entry : v.getAdjacentNode().entrySet()) {
-                    graph.insertEdge(parent, null, entry.getValue(), m.get(v), m.get(entry.getKey()));
+                    Object e1 = graph.insertEdge(parent, null, entry.getValue(), m.get(v), m.get(entry.getKey()));
+                    for (Edge e : listE) {
+                        if (e.getSource() == v && e.getDestiny() == entry.getKey()) {
+                            m1.put(e, e1);
+                            break;
+                        }
+                    }
+//                    for (Edge e : listEContrast) {
+//                        if (e.getSource() == v && e.getDestiny() == entry.getKey()) {
+//                            m1Contrash.put(e, e1);
+//                        }
+//                    }
                 }
             }
+            System.out.println(m1Contrash.size());
 
         } finally {
             graph.getModel().endUpdate();
         }
+
     }
+
+    public List<Edge> getListEContrast() {
+        return listEContrast;
+    }
+
+    public void setListEContrast(List<Edge> listEContrast) {
+        this.listEContrast = listEContrast;
+    }
+
+    public static HashMap getM1Contrash() {
+        return m1Contrash;
+    }
+
+    public static void setM1Contrash(HashMap m1Contrash) {
+        Graph.m1Contrash = m1Contrash;
+    }
+    
+    
 }

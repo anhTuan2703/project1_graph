@@ -1,10 +1,6 @@
 package com.mycompany.mavenproject.dijiktra;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -21,14 +17,14 @@ public class Vertex {
     private Map<Vertex, Integer> adjacentNode = new HashMap<>();
     private int positionX;
     private int positionY;
-    private String color;
+    private boolean visited = false; 
     
-    // list of target vertexs from this vertex
-    // list of source vertexs from this vertex
-    // if vertex v has target and source is vertex u, this edge is indirection(to initialize a indirection graph).
-//    private ArrayList<Vertex> tarList = new ArrayList<>();
-//    private ArrayList<Vertex> sourList = new ArrayList<>();
-            
+    // use for prim algorithm
+    private int value = Integer.MAX_VALUE;
+    
+    // use for kruskal algorithm
+    private Vertex parent;
+    private int size;
 
     public Vertex(String name) {
         this.name = name;
@@ -39,20 +35,42 @@ public class Vertex {
         this.positionX = positionX;
         this.positionY = positionY;
     }
-    public Vertex(String name, int positionX, int positionY, String color){
-        this.name = name;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.color = color;
-    }
-    
-    public String getColor(){
-        return this.color;
-    }
-    public void setColor(String color){
-        this.color = color;
+
+    public int getValue() {
+        return value;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public Vertex getParent() {
+        return parent;
+    }
+
+    public void setParent(Vertex parent) {
+        this.parent = parent;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+    
+    
+    
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+    
     public int getPositionX() {
         return positionX;
     }
@@ -88,27 +106,5 @@ public class Vertex {
     public void addAdjacentNode(Vertex node, int weight) {
         adjacentNode.put(node, weight);
     }
-    
-//    public ArrayList<Vertex> getTarList(){
-//        return this.tarList;
-//    }
-//    
-//    public void setTarList(ArrayList<Vertex> tarList){
-//        this.tarList = tarList;
-//    }
-//    public void addTarList(Vertex v){
-//        tarList.add(v);
-//    }
-//    
-//    public ArrayList<Vertex> getSourList(){
-//        return this.sourList;
-//    }
-//    
-//    public void setSourList(ArrayList<Vertex> sourList){
-//        this.sourList = sourList;
-//    }
-//    public void addSourList(Vertex v){
-//        sourList.add(v);
-//    }
 
 }

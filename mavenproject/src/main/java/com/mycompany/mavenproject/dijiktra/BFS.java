@@ -5,36 +5,48 @@
 package com.mycompany.mavenproject.dijiktra;
 
 import java.util.ArrayDeque;
+import java.util.Map;
 import java.util.Queue;
 
 /**
  *
- * @author vitua
+ * @author Admin
  */
-public class BFS {
-    private Graph g;
-    private Main m;
+public class BFS extends Thread {
 
-    public void bfs(Vertex s){
-        g = new Graph();
-        m = new Main();
+    public BFS() {
+        start();
+    }
+    
+    @Override
+    public void run() {
+        implementBFS(Main.g.getListV().get(0));
+    }
+
+    public void implementBFS(Vertex s) {
         Queue<Vertex> q = new ArrayDeque<>();
-        for(Vertex v: g.getListV()){
-            if(!v.equals(s)){
-                v.setColor("white");
+        showVertex(s, "grey", 1200);
+
+        q.add(s);
+        while (!q.isEmpty()) {
+            Vertex u = q.poll();
+            if (!u.isVisited()) {
+                u.setVisited(true);
+                for (Map.Entry<Vertex, Integer> entry : u.getAdjacentNode().entrySet()) {
+                    q.add(entry.getKey());
+                }
+                showVertex(u, "grey", 1200);
             }
         }
-        m.showVertex(s, "gray");
-        q.add(s);
-        while(! q.isEmpty()){
-           Vertex u = q.poll();
-           for(Vertex v: u.getAdjacentNode().keySet() ){
-               if(v.getColor().equals("white")){
-                   m.showVertex(v, "gray");
-                   q.add(v);
-               }
-           }
-           m.showVertex(u, "black");
-        }
     }
+
+    public void showVertex(Vertex v, String color, int sec) {
+        try {
+            Thread.sleep(sec);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+        Main.g.getGraph().getModel().setStyle(Main.g.getM().get(v), "fillColor=" + color);
+    }
+
 }
